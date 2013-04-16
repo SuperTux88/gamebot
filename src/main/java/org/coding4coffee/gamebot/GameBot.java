@@ -21,13 +21,15 @@ public class GameBot extends PircBot {
 		// split line
 		final String[] commandLine = message.split(" ");
 
+		final boolean isModerator = moderator.equalsIgnoreCase(sender);
+
 		if (active) {
 			// deactivate bot
 			active = false;
 
-			if ("!stop".equalsIgnoreCase(commandLine[0]) && moderator.equalsIgnoreCase(sender)) {
+			if ("!stop".equalsIgnoreCase(commandLine[0]) && isModerator) {
 				sendMessage(channel, "Runde beendet!");
-			} else {
+			} else if (!isModerator) {
 				// buzzer "pressed"
 				sendMessage(channel, sender + " ist dran!");
 
@@ -46,7 +48,7 @@ public class GameBot extends PircBot {
 			}
 		} else {
 			// activate bot
-			if ("!los".equalsIgnoreCase(commandLine[0]) && moderator.equalsIgnoreCase(sender)) {
+			if ("!los".equalsIgnoreCase(commandLine[0]) && isModerator) {
 				active = true;
 				sendMessage(channel, "Los gehts!");
 			}
