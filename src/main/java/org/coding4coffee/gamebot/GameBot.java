@@ -24,13 +24,13 @@ public class GameBot extends PircBot {
 		final boolean isModerator = moderator.equalsIgnoreCase(sender);
 
 		if (active) {
-			// deactivate bot
-			active = false;
-
 			if ("!stop".equalsIgnoreCase(commandLine[0]) && isModerator) {
+				// deactivate bot
+				active = false;
 				sendMessage(channel, "Runde beendet!");
 			} else if (!isModerator) {
 				// buzzer "pressed"
+				active = false;
 				sendMessage(channel, sender + " ist dran!");
 
 				// run bash script asynchronously
@@ -47,8 +47,8 @@ public class GameBot extends PircBot {
 				}).start();
 			}
 		} else {
-			// activate bot
 			if ("!los".equalsIgnoreCase(commandLine[0]) && isModerator) {
+				// activate bot
 				active = true;
 				sendMessage(channel, "Los gehts!");
 			}
