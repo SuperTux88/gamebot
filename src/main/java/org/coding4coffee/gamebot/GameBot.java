@@ -4,12 +4,15 @@ import org.jibble.pircbot.PircBot;
 
 public class GameBot extends PircBot {
 
-	private static final String MODERATOR = "SuperTux88";
+	private final String moderator;
+	private final String buzzerCommand;
 
 	private boolean active = false;
 
-	public GameBot() {
+	public GameBot(final String moderator, final String buzzerCommand) {
 		setName("gamebot");
+		this.moderator = moderator;
+		this.buzzerCommand = buzzerCommand;
 	}
 
 	@Override
@@ -22,7 +25,7 @@ public class GameBot extends PircBot {
 			// deactivate bot
 			active = false;
 
-			if ("!stop".equalsIgnoreCase(commandLine[0]) && MODERATOR.equalsIgnoreCase(sender)) {
+			if ("!stop".equalsIgnoreCase(commandLine[0]) && moderator.equalsIgnoreCase(sender)) {
 				sendMessage(channel, "Runde beendet!");
 			} else {
 				// buzzer "pressed"
@@ -34,7 +37,7 @@ public class GameBot extends PircBot {
 					@Override
 					public void run() {
 						try {
-							Runtime.getRuntime().exec("/home/benjamin/bin/java-exec-test.sh").waitFor();
+							Runtime.getRuntime().exec(buzzerCommand).waitFor();
 						} catch (final Exception e) {
 							e.printStackTrace();
 						}
@@ -43,7 +46,7 @@ public class GameBot extends PircBot {
 			}
 		} else {
 			// activate bot
-			if ("!los".equalsIgnoreCase(commandLine[0]) && MODERATOR.equalsIgnoreCase(sender)) {
+			if ("!los".equalsIgnoreCase(commandLine[0]) && moderator.equalsIgnoreCase(sender)) {
 				active = true;
 				sendMessage(channel, "Los gehts!");
 			}
