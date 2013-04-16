@@ -51,14 +51,5 @@ public class GameBot extends PircBot {
 				sendMessage(channel, "Los gehts!");
 			}
 		}
-
-		// easteregg :)
-		if ("!keks".equalsIgnoreCase(commandLine[0])) {
-			if (commandLine.length > 1) {
-				sendAction(channel, "gibt " + commandLine[1] + " einen Keks von " + sender);
-			} else {
-				sendAction(channel, "gibt " + sender + " einen Keks");
-			}
-		}
 	}
 }
