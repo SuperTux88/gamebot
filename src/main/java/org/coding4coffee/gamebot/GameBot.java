@@ -18,29 +18,35 @@ public class GameBot extends PircBot {
 		// split line
 		final String[] commandLine = message.split(" ");
 
-		if (!active) {
+		if (active) {
+			// deactivate bot
+			active = false;
+
+			if ("!stop".equalsIgnoreCase(commandLine[0]) && MODERATOR.equalsIgnoreCase(sender)) {
+				sendMessage(channel, "Runde beendet!");
+			} else {
+				// buzzer "pressed"
+				sendMessage(channel, sender + " ist dran!");
+
+				// run bash script asynchronously
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							Runtime.getRuntime().exec("/home/benjamin/bin/java-exec-test.sh").waitFor();
+						} catch (final Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}).start();
+			}
+		} else {
 			// activate bot
 			if ("!los".equalsIgnoreCase(commandLine[0]) && MODERATOR.equalsIgnoreCase(sender)) {
 				active = true;
 				sendMessage(channel, "Los gehts!");
 			}
-		} else {
-			// buzzer "pressed"
-			active = false;
-			sendMessage(channel, sender + " ist dran!");
-
-			// run bash script asynchronously
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						Runtime.getRuntime().exec("/home/benjamin/bin/java-exec-test.sh").waitFor();
-					} catch (final Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}).start();
 		}
 
 		// easteregg :)
