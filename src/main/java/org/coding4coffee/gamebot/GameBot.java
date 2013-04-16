@@ -45,7 +45,11 @@ public class GameBot extends PircBot {
 
 		// easteregg :)
 		if ("!keks".equalsIgnoreCase(commandLine[0])) {
-			sendAction(channel, "gibt " + sender + " einen Keks");
+			if (commandLine.length > 1) {
+				sendAction(channel, "gibt " + commandLine[1] + " einen Keks von " + sender);
+			} else {
+				sendAction(channel, "gibt " + sender + " einen Keks");
+			}
 		}
 	}
 }
